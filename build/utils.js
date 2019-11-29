@@ -4,6 +4,11 @@ const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
 
+// var path = require('path')
+var glob = require('glob')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var PAGE_PATH = path.resolve(__dirname, '../src/pages')
+var merge = require('webpack-merge')
 
 
 //多入口配置
