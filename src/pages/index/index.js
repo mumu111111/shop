@@ -10,12 +10,12 @@ new Vue({
     data: {
         lists: null
     },
-    created(){
+    created() {
         this.getLists()
     },
-    methods:{
-        getLists: function(){
-            axios.post(url.hot).then(res => {
+    methods: {
+        getLists: function () {
+            axios.get(url.hot).then(res => {
                 this.lists = res.data.lists
             })
         }
