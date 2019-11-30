@@ -1,3 +1,30 @@
+// {
+//   "presets": [
+//     [
+//       "env",
+//       {
+//         "modules": false,
+//         "targets": {
+//           "browsers": [
+//             "> 1%",
+//             "last 2 versions",
+//             "not ie <= 8"
+//           ]
+//         }
+//       }
+//     ],
+//     "stage-2"
+//   ],
+//   "plugins": [
+//     "component",
+//     [
+//       {
+//         "libraryName": "mint-ui",
+//         "style": true
+//       }
+//     ]
+//   ]
+// }
 {
   "presets": [
     [
@@ -16,12 +43,14 @@
     "stage-2"
   ],
   "plugins": [
-    "component",
     [
-      {
-        "libraryName": "mint-ui",
-        "style": true
-      }
+      "component",
+      [
+        {
+          "libraryName": "mint-ui",
+          "style": true
+        }
+      ]
     ]
   ]
 }

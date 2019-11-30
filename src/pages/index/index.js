@@ -4,34 +4,32 @@ import './index.css'
 import Vue from 'vue'
 import axios from 'axios'
 import url from 'js/api.js'
-import { Loadmore } from 'mint-ui';
+import { InfiniteScroll } from 'mint-ui';
 
-Vue.component(Loadmore.name, Loadmore);
+Vue.use(InfiniteScroll);
 
 new Vue({
     el: '.container',
     data: {
         lists: null,
-        allLoaded: false
+        loading: false //是否可触发loadmore方法加载更多
     },
     created() {
         this.getLists()
     },
     methods: {
         getLists: function () {
+            this.loading = true //若为真，则无限滚动不会被触发
             axios.get(url.hot).then(res => {
-                this.lists = res.data.lists
+                // this.lists = res.data.lists //不要加这句 有bug 
+                if (this.lists) {
+                    this.lists = this.lists.concat(res.data.lists)
+                } else {
+                    this.lists = res.data.lists
+                }
+                this.loading = false
+
             })
         }
-    },
-    loadBottom() {
-        console.log('load')
-        // 加载更多数据
-        // this.allLoaded = true;// 若数据已全部获取完毕
-        // this.$refs.loadmore.onBottomLoaded();
-    },
-    handleBottomChange(status) {
-        this.topStatus = status;
-    },
-
+    }
 })
