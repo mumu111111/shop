@@ -4,6 +4,7 @@ import './index.css'
 import Vue from 'vue'
 import axios from 'axios'
 import url from 'js/api.js'
+import Foot from 'components/Foot.vue'
 import { InfiniteScroll } from 'mint-ui';
 
 Vue.use(InfiniteScroll);
@@ -13,6 +14,9 @@ new Vue({
     data: {
         lists: null,
         loading: false //是否可触发loadmore方法加载更多
+    },
+    components:{
+        Foot
     },
     created() {
         this.getLists()
