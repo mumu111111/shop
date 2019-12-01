@@ -1,5 +1,6 @@
 let url = {
-    hot: '/index/hotLists'
+    hot: '/index/hotLists',
+    banner: '/index/bannerLists'
 }
 let hosts = 'http://rap2api.taobao.org/app/mock/166022'
 for (let key in url) {
