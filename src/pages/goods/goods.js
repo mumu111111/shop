@@ -28,7 +28,9 @@ new Vue({
         deals: null,
         type: 0,
         showSku: false,
-        skuNum: 1
+        skuNum: 1,
+        isAddCart: false,
+        showMessage: false
 
 
     },
@@ -100,6 +102,20 @@ new Vue({
         },
         addCart() {
             //异步请求 上传商品数据到购物车库
+            axios.post(url.addCart, { id, number: this.skuNum }).then(res => {
+                if (res.status === 200) {//加入购物车成功
+                    //icon显示  
+                    this.isAddCart = true
+
+                    // 提示加入购物车成功提示
+                    this.showMessage = true
+                    setTimeout(() => {
+                        this.showMessage = false
+                    }, 2000)
+                    // 弹窗隐藏
+                    this.showSku = false
+                }
+            })
 
         }
     }

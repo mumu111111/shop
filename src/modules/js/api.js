@@ -2,7 +2,8 @@ let url = {
     hot: '/index/hotLists',
     banner: '/index/bannerLists',
     detail: '/goods/detail',
-    deal: '/goods/deal'
+    deal: '/goods/deal',
+    addCart: '/cart/add'
 }
 let hosts = 'http://rap2api.taobao.org/app/mock/166022'
 for (let key in url) {
