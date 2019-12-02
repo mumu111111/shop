@@ -27,9 +27,19 @@ new Vue({
         tabIndex: 0,
         deals: null,
         type: 0,
-        shown: false
+        showSku: false
 
 
+    },
+    watch: {
+        showSku(val, oldVal) {
+
+            document.body.style.overflow = val ? 'hidden' : 'auto'
+            document.body.style.height = val ? '100%' : 'auto'
+
+            document.querySelector('html').style.overflow = val ? 'hidden' : 'auto'
+            document.querySelector('html').style.height = val ? '100%' : 'auto'
+        }
     },
     created() {
         this.getDetail()
@@ -63,7 +73,7 @@ new Vue({
         chooseType(type) {
             this.type = type
             if (type > 0) {
-                this.shown = true
+                this.showSku = true
             }
         }
     }
