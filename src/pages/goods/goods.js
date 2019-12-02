@@ -32,6 +32,9 @@ new Vue({
 
 
     },
+    components: {
+        Swipe
+    },
     watch: {
         showSku(val, oldVal) {
 
@@ -51,6 +54,9 @@ new Vue({
                 console.log(res.data)
                 this.details = res.data
                 this.danbao = this.details.renzheng
+
+                this.swipeLists = this.details.images
+                console.log('swpiperlist' + this.swipeLists)
             })
         },
         getDeal() {
@@ -78,8 +84,13 @@ new Vue({
             }
         },
         changeSkuNum(num) {
+            //当当前值为1时 -1操作不执行
             if (num < 0 && this.skuNum === 1) return
             this.skuNum += num
+        },
+        addCart() {
+            //异步请求 上传商品数据到购物车库
+
         }
     }
 })
