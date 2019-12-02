@@ -25,7 +25,9 @@ new Vue({
         swipeLists: [],
         danbao: null,
         tabIndex: 0,
-        deals: null
+        deals: null,
+        type: 0,
+        shown: false
 
 
     },
@@ -57,6 +59,12 @@ new Vue({
                 this.getDeal()
             }
 
+        },
+        chooseType(type) {
+            this.type = type
+            if (type > 0) {
+                this.shown = true
+            }
         }
     }
 })
