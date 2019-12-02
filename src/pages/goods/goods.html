@@ -454,7 +454,7 @@
         <ul class="history-list search-recom-list js-history-list clearfix"></ul><a class="tag tag-clear js-tag-clear c-gray-darker hide" href="javascript:;">清除历史搜索</a></div>
     </div>
     <div id="yFzBKP9GDL" style="height: 100%; position: fixed; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; transition: none 0.2s ease; opacity: 1; "
-      v-show="showSku"></div>
+      v-show="showSku" @click="showSku = false"></div>
     <div id="QfEqtDbeK9" class="sku-layout sku-box-shadow popup" style="overflow: hidden; position: absolute; z-index: 1000; background: white; bottom: 0px; left: 0px; right: 0px; visibility: visible; transform: translate3d(0px, 0px, 0px); transition: all 300ms ease; opacity: 1; "
       v-show="showSku">
       <div class="sku-layout-title name-card sku-name-card">
@@ -470,7 +470,7 @@
           </div>
         </div>
         <div class="js-cancel sku-cancel">
-          <div class="cancel-img"></div>
+          <div class="cancel-img" @click="showSku = false"></div>
         </div>
       </div>
       <div class="sku-detail adv-opts hotel-checkin-select" style="border: none; margin: 0; display: none;">
@@ -500,16 +500,16 @@
             <dd class="sku-quantity-contaienr">
               <dl class="clearfix">
                 <div class="quantity">
-                  <button class="minus disabled" type="button" disabled="true"></button>
-                  <input type="text" class="txt" pattern="[0-9]*" value="1">
+                  <button class="minus " type="button" :class="{disabled:skuNum===1}"></button>
+                  <input type="text" class="txt" pattern="[0-9]*" :value="skuNum">
                   <button class="plus" type="button"></button>
-                  <div class="response-area response-area-minus"></div>
-                  <div class="response-area response-area-plus"></div>
+                  <div class="response-area response-area-minus" @click="changeSkuNum(-1)"></div>
+                  <div class="response-area response-area-plus" @click="changeSkuNum(1)"></div>
                 </div>
               </dl>
             </dd>
             <dt class="other-info">
-              <div class="stock">剩余450件
+              <div class="stock">剩余{{details.remain}}件
               </div>
             </dt>
           </dl>

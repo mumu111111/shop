@@ -27,7 +27,8 @@ new Vue({
         tabIndex: 0,
         deals: null,
         type: 0,
-        showSku: false
+        showSku: false,
+        skuNum: 1
 
 
     },
@@ -75,6 +76,10 @@ new Vue({
             if (type > 0) {
                 this.showSku = true
             }
+        },
+        changeSkuNum(num) {
+            if (num < 0 && this.skuNum === 1) return
+            this.skuNum += num
         }
     }
 })
