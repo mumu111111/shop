@@ -14,6 +14,7 @@ import qs from 'qs'
 // import { InfiniteScroll } from 'mint-ui';
 
 // Vue.use(InfiniteScroll);
+//获取url的 id
 let { id } = qs.parse(location.search.substr(1))
 let detailTab = ['商品详情', '本店交易']
 new Vue({
@@ -23,7 +24,8 @@ new Vue({
         detailTab,
         swipeLists: [],
         danbao: null,
-        tabIndex: 0
+        tabIndex: 0,
+        deals: null
 
 
     },
@@ -38,8 +40,22 @@ new Vue({
                 this.danbao = this.details.renzheng
             })
         },
+        getDeal() {
+            axios.get(url.deal, { id }).then(res => {
+                // this.deals = res.data.lists
+                console.log(res.data.lists)
+                this.deals = res.data.lists
+
+            });
+
+
+        },
         changTab(index) {
             this.tabIndex = index
+            //切换到tab2 采取请求数据 index===1
+            if (index) {
+                this.getDeal()
+            }
 
         }
     }

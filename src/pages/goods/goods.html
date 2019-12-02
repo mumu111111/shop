@@ -125,7 +125,7 @@
                 {{item}} </button>
               </div>
               <div class="js-tabber-content">
-                <div class="js-part hide" data-type="sales">
+                <div class="js-part" data-type="sales" v-show="tabIndex === 1">
                   <div class="js-traderecord-list block-list-traderecord">
                     <div class="list-header">
                       <span class="col-1">买家</span>
@@ -133,11 +133,16 @@
                       <span class="col-3 center">数量</span>
                     </div>
                     <div class="js-list b-list block block-list">
+                      <div class="block-item" v-for="list in deals">
+                        <span class="col-1 c-gray-darker">{{list.maijia}}</span>
+                        <span class="col-2 c-gray-dark center">{{list.time}}</span>
+                        <span class="col-3 c-gray-darker center">{{list.num}}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="js-part js-goods-detail goods-tabber-c" data-type="goods">
-                  <div class="js-components-container components-container" v-html="details.description">
+                  <div class="js-components-container components-container" v-html="details.description" v-show="tabIndex === 0">
                     <!-- 商品详情 -->
 
                     <!-- <div class="custom-richtext js-lazy-container js-view-image-list">
