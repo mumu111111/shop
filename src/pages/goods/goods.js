@@ -55,8 +55,18 @@ new Vue({
                 this.details = res.data
                 this.danbao = this.details.renzheng
 
-                this.swipeLists = this.details.images
+                // this.swipeLists = this.details.images
+                this.details.images.forEach((item) => {
+                    item.img
+                    this.swipeLists.push(
+                        {
+                            url: '',
+                            img: item.img
+                        }
+                    )
+                });
                 console.log('swpiperlist' + this.swipeLists)
+
             })
         },
         getDeal() {
