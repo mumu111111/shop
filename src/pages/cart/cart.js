@@ -128,6 +128,26 @@ new Vue({
                     item.shopMessage = shop.editing ? '' : '编辑' //item表示当前店铺 不要写成shop  当编辑店铺外的其他商铺 在 编辑状态下的 显示状态
                 }
             })
+        },
+        add(good, shop) {//请求修改后台数据库num值
+            axios.post(url.addCart, {
+                id: good.id,
+                number: 1
+            }).then(res => {
+                if (res.status === 200) {
+                    good.num++
+                }
+            })
+        },
+        reduce(good, shop) {
+            axios.post(url.reduceCart, {
+                id: good.id,
+                number: 1
+            }).then(res => {
+                if (res.status === 200) { //判断请求成功后 才能处理本地数据
+                    good.num--
+                }
+            })
         }
 
     }
