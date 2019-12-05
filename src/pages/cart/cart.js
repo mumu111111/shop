@@ -13,10 +13,12 @@ new Vue({
         cartlist: null,
         // goodsList: null
         total: 0,//价格
-        arr: [], //所选商品列表
+        // arr: [], //所选商品列表
         // editing: false 这里自定义的data 不能控制遍历数据内的情况 所以必须在数组内定义
-        editingShop: false,//在编辑的商铺
-        editingShopIndex: -1 //编辑中的商铺下标
+        editingShop: null,//在编辑的商铺
+        editingShopIndex: -1,//编辑中的商铺下标
+        // goodData: null //存放选中
+        removePopup: false
     },
     created() {
         axios.get(url.cartList).then(res => {
@@ -111,11 +113,25 @@ new Vue({
 
             return []
 
+        },
+        removeList() {//实时监测选中商品的个数
+            if (this.editingShop) {
+                let arr = []
+                this.editingShop.goodsList.forEach(good => {
+
+                    if (good.removeChecked) {
+                        arr.push(good)
+                    }
+                })
+                return arr
+
+            }
+            return []
         }
     },
     methods: {
         selectGood(shop, shopIndex, good, goodIndex) {
-
+            this.goodData = { shop, shopIndex, good, goodIndex }//{good: xx,shop: uu}
             if (this.editingShop) {
                 good.removeChecked = !good.removeChecked //编辑状态
                 shop.removeChecked = shop.goodsList.every(item => {
@@ -202,6 +218,35 @@ new Vue({
                     good.num--
                 }
             })
+        },
+        removeGood() {//????修改后台数据
+
+            this.removePopup = true //弹出框自定义全局data 因为在全局
+            this.removeMsg = `确定要删除这${this.removeList.length}个商品吗`
+
+
+            // this.removeList.forEach(good => {
+            //     axios.post(url, {
+            //         id: good.id,
+
+            //     })
+            // })
+        },
+        removeCancel() {
+
+        },
+        removeConfirm() {
+            this.removeList.forEach(good => {
+                axios.post(url, {
+                    id: good.id
+
+                }).then(res => {
+                    if (res.data.status === 200) {
+                        this.editingShop.splice(shopIndex, 1)
+                    }
+                })
+            })
+
         }
 
     }
