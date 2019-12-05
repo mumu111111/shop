@@ -116,8 +116,12 @@ new Vue({
             this.allSelect = !this.allSelect
         },
         edit(shop, shopIndex) {
+            //编辑时，切换店铺的状态 和 message
+            //放置位置有错 这两句不用再循环时声明
+            shop.editing = !shop.editing
+            shop.shopMessage = shop.editing ? '完成' : '编辑'
+
             this.cartlist.forEach((item, i) => {
-                shop.shopMessage = shop.editing ? '完成' : '编辑'
 
                 if (i === shopIndex) {
                     //当前shop是要编辑的店铺 只能一次编辑一个
