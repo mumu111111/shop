@@ -12,10 +12,11 @@ new Vue({
     data: {
         cartlist: null,
         // goodsList: null
-        total: 0,
-        arr: [],
+        total: 0,//价格
+        arr: [], //所选商品列表
         // editing: false 这里自定义的data 不能控制遍历数据内的情况 所以必须在数组内定义
-        editingShop: false
+        editingShop: false,//在编辑的商铺
+        editingShopIndex: -1 //编辑中的商铺下标
     },
     created() {
         axios.get(url.cartList).then(res => {
@@ -24,12 +25,14 @@ new Vue({
             // this.goodsList = res.data.lists.goodsList
             res.data.lists.forEach((shop) => {
                 shop.checked = false
+                shop.removeChecked = false
                 shop.editing = false
                 shop.shopMessage = '编辑'
                 console.log('goods' + shop.goodsList)
                 shop.goodsList.forEach((good) => {
                     console.log('good' + good)
                     good.checked = false
+                    good.removeChecked = false
                     good.editing = false
 
                 })
@@ -72,6 +75,22 @@ new Vue({
                 })
             }
         },
+        removeAllSelect: {
+            //这个地方拿不到shop good  只能自定义editingShop 来知道编辑时是哪个shop 再拿来使用
+            get() { //获取当前全选状态
+                if (this.editingShop) {
+                    return this.editingShop.removeChecked
+                }
+                return false
+            },
+            set(newVal) {
+                this.editingShop.removeChecked = newVal
+                this.editingShop.goodsList.forEach(good => {
+
+                    good.removeChecked = newVal
+                })
+            }
+        },
         selectList() { //只有get()写法 根据商品checked 变化 而变化总价和结算的商品数量
             if (this.cartlist && this.cartlist.length) { //不要忘记判断是否存在依赖data
                 let arr = []
@@ -95,27 +114,48 @@ new Vue({
         }
     },
     methods: {
-        selectGood(good, shop) {
-            good.checked = !good.checked //状态切换
-            shop.checked = shop.goodsList.every(item => {//判断是不是所有商品都是选中状态
+        selectGood(shop, shopIndex, good, goodIndex) {
 
-                return item.checked
-
-                console.log('total' + this.total)
-
-            })
+            if (this.editingShop) {
+                good.removeChecked = !good.removeChecked //编辑状态
+                shop.removeChecked = shop.goodsList.every(item => {
+                    return item.removeChecked
+                })
+            } else {
+                good.checked = !good.checked //正常状态 
+                shop.checked = shop.goodsList.every(item => {
+                    return item.checked
+                })
+            }
 
         },
         selectShop(shop) {
-            shop.checked = !shop.checked
-            shop.goodsList.forEach(item => { //选中店铺 那么所哟商品也全部选中
-                item.checked = shop.checked
-            })
+            if (this.editingShop) {
+                shop.removeChecked = !shop.removeChecked //编辑状态
+                shop.goodsList.forEach(item => { //选中店铺 那么所哟商品也全部选中
+                    item.removeChecked = shop.removeChecked
+                })
+            } else {
+                shop.checked = !shop.checked //正常状态 
+                shop.goodsList.forEach(item => { //选中店铺 那么所哟商品也全部选中
+                    item.checked = shop.checked
+                })
+            }
+
+            // shop.checked = !shop.checked
+            // shop.goodsList.forEach(item => { //选中店铺 那么所哟商品也全部选中
+            //     item.checked = shop.checked
+            // })
         },
         selectAll() {//全选
-            this.allSelect = !this.allSelect
+            if (this.editingShop) {//存在编辑的商铺 所以是编辑下的状态改变
+                this.removeAllSelect = !this.removeAllSelect
+            } else {
+                this.allSelect = !this.allSelect
+            }
         },
         edit(shop, shopIndex) {
+            // var { shop, shopIndex, good, goodIndex } = this.editShop
             //编辑时，切换店铺的状态 和 message
             //放置位置有错 这两句不用再循环时声明
             shop.editing = !shop.editing
@@ -125,8 +165,8 @@ new Vue({
             // }else{
             //     this.editiongShop = false
             // } 2种写法
-            this.editingShop = shop.editing ? 'true' : 'false'
-
+            this.editingShop = shop.editing ? shop : null
+            this.editingShopIndex = shop.editing ? shopIndex : -1
             this.cartlist.forEach((item, i) => {
                 if (shopIndex !== i) {
                     item.editing = false

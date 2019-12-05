@@ -16,7 +16,7 @@
 
 </head>
 
-<body class=" body-fixed-bottom" style="">
+<body class=" body-fixed-bottom">
   <div class="container " style="min-height: 581px;">
     <div class="content clearfix js-page-content">
       <div id="cart-container">
@@ -24,14 +24,16 @@
           <div class="js-shop-list shop-list" v-for="(shop, shopIndex) in cartlist">
             <div class="block block-order block-cart">
               <div class="header">
-                <div class="select-group js-select-group">
-                  <span class="check" :class="{checked: shop.checked}" @click="selectShop(shop)"></span>
+                <div class="select-group js-select-group" @click="selectShop(shop)">
+                  <!-- 两个span  分别代表正常和编辑模式的勾选按钮 2种状态就分得很开了 各自管理各自的 隐藏或显示一个span -->
+                  <span class="check" :class="{checked: shop.checked}" v-show="!editingShop"></span>
+                  <span class="check" :class="{checked: shop.removeChecked}" v-show="editingShop"></span>
                 </div>
                 <a class="shop-title">
                   <i class="custom-store-img">店铺：</i>
                   {{shop.shop}}
                 </a>
-                <a href="javascript:;" data-type="cart" class="j-edit-list pull-right c-blue font-size-12 edit-list" @click="edit(shop,shopIndex)">
+                <a href="javascript:;" data-type="cart" class="j-edit-list pull-right c-blue font-size-12 edit-list" @click="edit(shop, shopIndex)">
                   {{shop.shopMessage}}
                 </a>
               </div>
@@ -39,7 +41,11 @@
                 <ul class="js-list block block-list block-list-cart border-0">
                   <li class="block-item block-item-cart " :class="{editing: shop.editing }" v-for="(good,goodIndex) in shop.goodsList">
                     <div>
-                      <div class="全选"><span class="check" :class="{checked: good.checked}" @click="selectGood(good,shop)"></span></div>
+                      <div class="全选" @click="selectGood(shop,shopIndex,good,goodIndex)">
+                        <span class="check" :class="{checked: good.checked}" v-show="!editingShop"></span>
+                        <span class="check" :class="{checked: good.removeChecked}" v-show="editingShop"></span>
+
+                      </div>
                       <div class="name-card clearfix">
                         <a href="https://h5.youzan.com/v2/showcase/goods?alias=2oivacpjh2ex0" class="thumb js-goods-link">
                           <img  class="js-lazy" 
@@ -184,7 +190,13 @@
               你需要分开结算每个店铺的商品哦~
             </div>
             <div class="bottom-cart clear-fix">
-              <div class="select-all"><span class="check" :class="{checked: allSelect}" @click="selectAll()"></span> 全选
+              <div class="select-all" @click="selectAll">
+                <!-- 同套结构 但是数据独立 -->
+                <!-- 底部通栏 显示在全局状态下 而不在数组遍历中  所以获取不到shop good值 -->
+                <!-- <span class="check" :class="{checked: editingShop? removeAllSelect : allSelect}" @click="selectAll()"></span>                全选 -->
+
+                <span class="check" :class="{checked: allSelect}" v-show="!editingShop"></span>
+                <span class="check" :class="{checked: removeAllSelect}" v-show="editingShop"></span> 全选
               </div>
               <!-- 显示状态 -->
               <div class="total-price" v-show="!editingShop">
@@ -197,7 +209,7 @@
                 <!--使用计算属性 符合特性 依赖变化而变化-->
               </button>
               <!-- 编辑状态 -->
-              <button href="javascript:;" disabled="disabled" class="j-delete-goods btn font-size-14 btn-red" style="display: none;" v-show="editingShop">
+              <button href="javascript:;" disabled="disabled" class="j-delete-goods btn font-size-14 btn-red" v-show="editingShop">
                 删除
               </button>
             </div>
