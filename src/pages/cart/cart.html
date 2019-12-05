@@ -21,7 +21,7 @@
     <div class="content clearfix js-page-content">
       <div id="cart-container">
         <div>
-          <div class="js-shop-list shop-list" v-for="shop in cartlist">
+          <div class="js-shop-list shop-list" v-for="(shop, shopIndex) in cartlist">
             <div class="block block-order block-cart">
               <div class="header">
                 <div class="select-group js-select-group">
@@ -31,15 +31,13 @@
                   <i class="custom-store-img">店铺：</i>
                   {{shop.shop}}
                 </a>
-                <a href="javascript:;" data-type="cart" class="j-edit-list pull-right c-blue font-size-12 edit-list">
-                  <!---->
-                  编辑
+                <a href="javascript:;" data-type="cart" class="j-edit-list pull-right c-blue font-size-12 edit-list" @click="edit(shop,shopIndex)">
+                  {{shop.shopMessage}}
                 </a>
               </div>
-              <!---->
               <div>
                 <ul class="js-list block block-list block-list-cart border-0">
-                  <li class="block-item block-item-cart editing" v-for="good in shop.goodsList">
+                  <li class="block-item block-item-cart " :class="{editing: shop.editing }" v-for="(good,goodIndex) in shop.goodsList">
                     <div>
                       <div class="全选"><span class="check" :class="{checked: good.checked}" @click="selectGood(good,shop)"></span></div>
                       <div class="name-card clearfix">
@@ -55,12 +53,12 @@
                             {{good.guige}}
                           </p>
                           <!-- 显示状态 -->
-                          <div class="num" style="display:block;">
+                          <div class="num" v-show="!shop.editing">
                             ×<span class="num-txt">{{good.num}}</span>
                             <!---->
                           </div>
                           <!-- 编辑状态 -->
-                          <div class="num" style="display: none;">
+                          <div class="num" v-show="shop.editing">
                             <!---->
                             <div class="quantity">
                               <button type="button" class="minus disabled"></button>

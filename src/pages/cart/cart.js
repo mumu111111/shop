@@ -13,7 +13,9 @@ new Vue({
         cartlist: null,
         // goodsList: null
         total: 0,
-        arr: []
+        arr: [],
+        // editing: false 这里自定义的data 不能控制遍历数据内的情况 所以必须在数组内定义
+
     },
     created() {
         axios.get(url.cartList).then(res => {
@@ -22,10 +24,14 @@ new Vue({
             // this.goodsList = res.data.lists.goodsList
             res.data.lists.forEach((shop) => {
                 shop.checked = false
+                shop.editing = false
+                shop.shopMessage = '编辑'
                 console.log('goods' + shop.goodsList)
                 shop.goodsList.forEach((good) => {
                     console.log('good' + good)
                     good.checked = false
+                    good.editing = false
+
                 })
             })
             this.cartlist = res.data.lists
@@ -106,10 +112,22 @@ new Vue({
                 item.checked = shop.checked
             })
         },
-        selectAll() {
+        selectAll() {//全选
             this.allSelect = !this.allSelect
+        },
+        edit(shop, shopIndex) {
+            this.cartlist.forEach((item, i) => {
+                shop.shopMessage = shop.editing ? '完成' : '编辑'
 
+                if (i === shopIndex) {
+                    //当前shop是要编辑的店铺 只能一次编辑一个
+                    item.editing = true
 
+                } else {
+                    item.editing = false
+                    item.shopMessage = shop.editing ? '' : '编辑' //item表示当前店铺 不要写成shop  当编辑店铺外的其他商铺 在 编辑状态下的 显示状态
+                }
+            })
         }
 
     }
