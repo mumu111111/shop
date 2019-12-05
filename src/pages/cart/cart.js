@@ -15,7 +15,7 @@ new Vue({
         total: 0,
         arr: [],
         // editing: false 这里自定义的data 不能控制遍历数据内的情况 所以必须在数组内定义
-
+        editingShop: false
     },
     created() {
         axios.get(url.cartList).then(res => {
@@ -120,17 +120,27 @@ new Vue({
             //放置位置有错 这两句不用再循环时声明
             shop.editing = !shop.editing
             shop.shopMessage = shop.editing ? '完成' : '编辑'
+            // if(shop.editing){
+            //     this.editiongShop = true
+            // }else{
+            //     this.editiongShop = false
+            // } 2种写法
+            this.editingShop = shop.editing ? 'true' : 'false'
 
             this.cartlist.forEach((item, i) => {
-
-                if (i === shopIndex) {
-                    //当前shop是要编辑的店铺 只能一次编辑一个
-                    item.editing = true
-
-                } else {
+                if (shopIndex !== i) {
                     item.editing = false
                     item.shopMessage = shop.editing ? '' : '编辑' //item表示当前店铺 不要写成shop  当编辑店铺外的其他商铺 在 编辑状态下的 显示状态
                 }
+                // 更简洁代码
+                // if (i === shopIndex) {
+                //     //当前shop是要编辑的店铺 只能一次编辑一个
+                //     item.editing = true
+
+                // } else {
+                //     item.editing = false
+                //     item.shopMessage = shop.editing ? '' : '编辑' //item表示当前店铺 不要写成shop  当编辑店铺外的其他商铺 在 编辑状态下的 显示状态
+                // }
             })
         },
         add(good, shop) {//请求修改后台数据库num值

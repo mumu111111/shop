@@ -187,7 +187,7 @@
               <div class="select-all"><span class="check" :class="{checked: allSelect}" @click="selectAll()"></span> 全选
               </div>
               <!-- 显示状态 -->
-              <div class="total-price">
+              <div class="total-price" v-show="!editingShop">
                 合计：¥<span class="js-total-price" style="color: rgb(255, 102, 0);">{{ total}}</span>
                 <p class="c-gray-dark">不含运费</p>
                 <!-- 虽然在dom挂载点中 但是并没有遍历数据里面的结构 自定义data使用 -->
@@ -197,7 +197,7 @@
                 <!--使用计算属性 符合特性 依赖变化而变化-->
               </button>
               <!-- 编辑状态 -->
-              <button href="javascript:;" disabled="disabled" class="j-delete-goods btn font-size-14 btn-red" style="display: none;">
+              <button href="javascript:;" disabled="disabled" class="j-delete-goods btn font-size-14 btn-red" style="display: none;" v-show="editingShop">
                 删除
               </button>
             </div>
