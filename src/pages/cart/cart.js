@@ -349,6 +349,7 @@ new Vue({
             if (good.startX - endX > 100) {
                 left = "0px"
             }
+
             velocity(this.$refs[`goods-${shopIndex}-${goodIndex}`], {
                 left
             })
