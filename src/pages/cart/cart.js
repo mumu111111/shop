@@ -226,7 +226,7 @@ new Vue({
             this.removePopup = true
             this.removeMsg = '确定要删除此商品吗'
             this.removeData = { shop, shopIndex, good, goodIndex } //其他全局状态还需要数据  所以把他放全局 全局才可以访问到
-
+            // removeData 只有在点击单个商品删除按钮时 才产生 
         },
         removeGoods() {//????修改后台数据
 
@@ -241,16 +241,19 @@ new Vue({
             //     })
             // })
         },
-        removeCancel() {
 
-        },
-        removeConfirm() {
-            let { shop, shopIndex, good, goodIndex } = this.removeData
+        removeConfirm() { //一个按钮两个地方可使用到 所以得判断if else
+
             //要不要判断是删除一个还是多个 因为因为多个 单个 显示弹出内容不同
             if (this.removeMsg === '确定要删除此商品吗') { //单个删除
+                let { shop, shopIndex, good, goodIndex } = this.removeData //当上面的删除按钮触发时才对起作用 能传过来 这个数据
+
+
                 //后台处理 但是没办法拿到商品 因为是全局状态
-                axios.post(url.removeCart, good.id)
+
+                axios.post(url.removeCart, { id: good.id })
                     .then(res => {//处理本地数据
+                        console.log('shop' + shop)
                         shop.goodsList.splice(goodIndex, 1)
                         if (!shop.goodsList.length) {
                             // console.dir('editingshop' + this.editingShop)
@@ -259,6 +262,38 @@ new Vue({
                         this.removedShop()//删除shop以后
                         this.removePopup = false
                     })
+            } else {//删除多个商品  
+                //找到选中的商品
+
+                var newArr = []
+                var arrIds = []
+                this.removeList.forEach(good => {
+                    return arrIds.push(good.id)
+                })
+                axios.post(url.removeCart, { arrIds }).then(res => {
+                    //删掉我也得知道他们的index 才能用splice(index,1) 
+                    this.editingShop.goodsList.forEach(good => {
+                        // findIndex 可以返回索引的方法 需要下标时用
+                        var index = this.removeList.findIndex(item => {
+                            return item.id === good.id
+
+                        })
+                        if (index === -1) {
+                            newArr.push(good)
+
+
+                        }
+                    })
+                    if (newArr.length) {
+                        this.editingShop.goodsList = newArr //删除选中的 将没选的赋值
+                    } else {
+                        this.cartlist.splice(this.editingShopIndex, 1)
+                        this.removedShop() //当个没有可编辑的商品时 执行回到正常状态
+
+                    }
+                    this.removePopup = false
+                })
+
             }
 
 
