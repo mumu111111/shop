@@ -18,7 +18,9 @@ new Vue({
         editingShop: null,//在编辑的商铺
         editingShopIndex: -1,//编辑中的商铺下标
         // goodData: null //存放选中
-        removePopup: false
+        removeMsg: '',
+        removePopup: false,
+        removeData: null
     },
     created() {
         axios.get(url.cartList).then(res => {
@@ -219,7 +221,14 @@ new Vue({
                 }
             })
         },
-        removeGood() {//????修改后台数据
+        removeGood(shop, shopIndex, good, goodIndex) {
+
+            this.removePopup = true
+            this.removeMsg = '确定要删除此商品吗'
+            this.removeData = { shop, shopIndex, good, goodIndex } //其他全局状态还需要数据  所以把他放全局 全局才可以访问到
+
+        },
+        removeGoods() {//????修改后台数据
 
             this.removePopup = true //弹出框自定义全局data 因为在全局
             this.removeMsg = `确定要删除这${this.removeList.length}个商品吗`
@@ -236,18 +245,61 @@ new Vue({
 
         },
         removeConfirm() {
-            this.removeList.forEach(good => {
-                axios.post(url, {
-                    id: good.id
+            let { shop, shopIndex, good, goodIndex } = this.removeData
+            //要不要判断是删除一个还是多个 因为因为多个 单个 显示弹出内容不同
+            if (this.removeMsg === '确定要删除此商品吗') { //单个删除
+                //后台处理 但是没办法拿到商品 因为是全局状态
+                axios.post(url.removeCart, good.id)
+                    .then(res => {//处理本地数据
+                        shop.goodsList.splice(goodIndex, 1)
+                        if (!shop.goodsList.length) {
+                            // console.dir('editingshop' + this.editingShop)
+                            this.cartlist.splice(shopIndex, 1)
+                        }
+                        this.removedShop()//删除shop以后
+                        this.removePopup = false
+                    })
+            }
 
-                }).then(res => {
-                    if (res.data.status === 200) {
-                        this.editingShop.splice(shopIndex, 1)
-                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // this.removeList.forEach(good => {
+            //     axios.post(url, {
+            //         id: good.id
+
+            //     }).then(res => {
+            //         if (res.data.status === 200) {
+            //             this.editingShop.splice(shopIndex, 1)
+            //         }
+            //     })
+            // })
+
+        },
+        removedShop() { //编辑状态 删除了编辑的店铺 后 还原到正常状态
+
+            this.editingShop = null
+            this.editingShopIndex = -1
+
+            this.cartlist.forEach(shop => {
+                shop.editing = false
+                shop.shopMessage = '编辑'
+                shop.goodsList.forEach(good => {
+                    good.editing = false
+
                 })
+
             })
-
         }
-
     }
 })

@@ -5,7 +5,8 @@ let url = {
     deal: '/goods/deal',
     addCart: '/cart/add',
     reduceCart: '/cart/reduce',
-    cartList: '/cart/lists'
+    cartList: '/cart/lists',
+    removeCart: '/cart/remove'
 }
 let hosts = 'http://rap2api.taobao.org/app/mock/166022'
 for (let key in url) {
