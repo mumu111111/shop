@@ -5,6 +5,7 @@ import './cart.css'
 import Vue from 'vue'
 import axios from 'axios'
 import url from 'js/api.js'
+import velocity from 'velocity-animate'
 
 
 new Vue({
@@ -335,6 +336,23 @@ new Vue({
                 })
 
             })
+        },
+        start(e, good) {
+            good.startX = e.changedTouches[0].clientX
+        },
+        end(e, good, shopIndex, goodIndex) {
+            let endX = e.changedTouches[0].clientX
+            let left = "0"
+            if (good.startX - endX > 100) {
+                left = "-60px"
+            }
+            if (good.startX - endX > 100) {
+                left = "0px"
+            }
+            velocity(this.$refs[`goods-${shopIndex}-${goodIndex}`], {
+                left
+            })
+
         }
     }
 })
