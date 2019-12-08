@@ -323,7 +323,6 @@ new Vue({
         },
         end(e, good, shopIndex, goodIndex) {
             let endX = e.changedTouches[0].clientX
-            console.log(endX)
             let left = "0"
             if (good.startX - endX > 100) { //左滑显示按钮
                 left = "-60px"
