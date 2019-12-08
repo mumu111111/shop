@@ -132,6 +132,16 @@ new Vue({
             return []
         }
     },
+    watch: {
+        removePopup(val, oldVal) {
+
+            document.body.style.overflow = val ? 'hidden' : 'auto'
+            document.body.style.height = val ? '100%' : 'auto'
+
+            document.querySelector('html').style.overflow = val ? 'hidden' : 'auto'
+            document.querySelector('html').style.height = val ? '100%' : 'auto'
+        }
+    },
     methods: {
         selectGood(shop, shopIndex, good, goodIndex) {
             this.goodData = { shop, shopIndex, good, goodIndex }//{good: xx,shop: uu}
@@ -234,13 +244,6 @@ new Vue({
             this.removePopup = true //弹出框自定义全局data 因为在全局
             this.removeMsg = `确定要删除这${this.removeList.length}个商品吗`
 
-
-            // this.removeList.forEach(good => {
-            //     axios.post(url, {
-            //         id: good.id,
-
-            //     })
-            // })
         },
 
         removeConfirm() { //一个按钮两个地方可使用到 所以得判断if else
@@ -296,30 +299,6 @@ new Vue({
                 })
 
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            // this.removeList.forEach(good => {
-            //     axios.post(url, {
-            //         id: good.id
-
-            //     }).then(res => {
-            //         if (res.data.status === 200) {
-            //             this.editingShop.splice(shopIndex, 1)
-            //         }
-            //     })
-            // })
 
         },
         removedShop() { //编辑状态 删除了编辑的店铺 后 还原到正常状态
