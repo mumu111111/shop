@@ -339,14 +339,17 @@ new Vue({
         },
         start(e, good) {
             good.startX = e.changedTouches[0].clientX
+            console.log(good.startX)
+
         },
         end(e, good, shopIndex, goodIndex) {
             let endX = e.changedTouches[0].clientX
+            console.log(endX)
             let left = "0"
-            if (good.startX - endX > 100) {
+            if (good.startX - endX > 100) { //左滑显示按钮
                 left = "-60px"
             }
-            if (good.startX - endX > 100) {
+            if (endX - good.startX > 100) {//右滑还原
                 left = "0px"
             }
 
