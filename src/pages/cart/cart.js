@@ -6,7 +6,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import url from 'js/api.js'
 import velocity from 'velocity-animate'
-
+import Cart from 'js/cartService.js'
 
 new Vue({
     el: '.container',
@@ -213,14 +213,18 @@ new Vue({
             })
         },
         add(good, shop) {//请求修改后台数据库num值
-            axios.post(url.addCart, {
-                id: good.id,
-                number: 1
-            }).then(res => {
-                if (res.status === 200) {
-                    good.num++
-                }
+            
+            Cart.add(good.id).then(res=> {
+                good.num++
             })
+            // axios.post(url.addCart, {
+            //     id: good.id,
+            //     number: 1
+            // }).then(res => {
+            //     if (res.status === 200) {
+            //         good.num++
+            //     }
+            // })
         },
         reduce(good, shop) {
             axios.post(url.reduceCart, {
@@ -254,16 +258,17 @@ new Vue({
 
 
                 //后台处理 但是没办法拿到商品 因为是全局状态
+                // fetch(GET, url.removeCart, {id: good.id}).then(res=> {
 
+                // })
                 axios.post(url.removeCart, { id: good.id })
                     .then(res => {//处理本地数据
-                        console.log('shop' + shop)
                         shop.goodsList.splice(goodIndex, 1)
                         if (!shop.goodsList.length) {
                             // console.dir('editingshop' + this.editingShop)
                             this.cartlist.splice(shopIndex, 1)
+                            this.removedShop()//删除shop以后 还原状态
                         }
-                        this.removedShop()//删除shop以后
                         this.removePopup = false
                     })
             } else {//删除多个商品  
