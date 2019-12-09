@@ -213,9 +213,11 @@ new Vue({
             })
         },
         add(good, shop) {//请求修改后台数据库num值
-            
+            console.log(Cart)
             Cart.add(good.id).then(res=> {
+                console.log(111111)
                 good.num++
+                console.log('nnum'+good.num)
             })
             // axios.post(url.addCart, {
             //     id: good.id,

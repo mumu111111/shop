@@ -7,16 +7,18 @@ function fetch(method='GET',url,data={}){
         }else{
             options.data = data
         }
-        axios.post(url, data).then(res=> {
+        axios(options).then(res=> {
             let status = res.data.status
-            if(status === 200){
-                resolve(res)
-            }
-            if(status > 300){
-                location.href = "login.html"
-                resolve(res)
-            }
-            reject(res)
+            console.log(status)
+            // if(status === 200){
+            //     resolve(res)
+            // }
+            // if(status > 300){
+            //     location.href = "login.html"
+            //     resolve(res)
+            // }
+            // reject(res)
+            resolve(res)
         }).catch(error=> {
             reject(error)
         })
