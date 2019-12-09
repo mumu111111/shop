@@ -318,7 +318,7 @@ new Vue({
         },
         start(e, good) {
             good.startX = e.changedTouches[0].clientX
-            console.log(good.startX)
+            // console.log(good.startX)
 
         },
         end(e, good, shopIndex, goodIndex) {
