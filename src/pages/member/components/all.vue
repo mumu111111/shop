@@ -1,7 +1,8 @@
 <template>
   <div class="container " style="min-height: 597px;">
     <div class="block-list address-list section section-first js-no-webview-block"
-    v-for="list in lists">
+    v-for="list in lists"> 
+    <!-- list必须带cityvalue等 好传递给form -->
       <a class="block-item js-address-item address-item " :class="{'address-item-default': list.isDefault}"
         @clic="toEdit(list)">
         <div class="address-title">{{list.username}} {{list.phone}}13112345678</div>
@@ -35,7 +36,10 @@ export default {
   },
   methods: {
     toEdit(list) {
-      this.$router.push({ path: "/form", query: { type: edit } }); //?type=edit
+      this.$router.push({
+        path: "/form",
+        query: { type: edit, instance: list }
+      }); //?type=edit
     }
   }
 };

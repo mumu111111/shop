@@ -17,7 +17,12 @@ let router = new Router(
 
             },
             {
-                path: '/form',
+                path: 'all',
+                component: import('../components/all.vue'),
+
+            },
+            {
+                path: 'form',
                 component: import('../components/form.vue'),
 
             }

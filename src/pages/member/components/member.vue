@@ -90,6 +90,12 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  name: "Member"
+};
 </script>
+<style scoped>
+@import "./member_base.css";
+@import "./member.css";
+</style>
 
