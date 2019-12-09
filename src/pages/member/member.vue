@@ -1,23 +1,5 @@
-<!DOCTYPE html>
-<html class="" lang="zh-cmn-Hans">
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="keywords" content="有赞,移动电商服务平台">
-  <meta name="description" content="">
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="format-detection" content="telephone=no">
-  <meta http-equiv="cleartype" content="on">
-  <meta name="referrer" content="always">
-  <link rel="shortcut icon" href="https://b.yzcdn.cn/v2/image/yz_fc.ico">
-  <title>我</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-</head>
-
-<body class=" ">
-  <div class="container " style="min-height: 581px;">
+<template>
+   <div class="container " style="min-height: 581px;">
     <div class="content">
       <div class="user-infos">
         <div class="pull-left avatar">
@@ -95,9 +77,9 @@
           </a>
         </div>
         <div class="block block-list list-vertical">
-          <a class="block-item link clearfix ico-setting js-login" href="https://h5.youzan.com/v2/buyer/member/setting" target="_blank">
+          <router-link class="block-item link clearfix ico-setting js-login" to="/address">
             <p class="title-info c-black font-size-14">收货地址管理</p>
-          </a>
+          </router-link>
           <a class="block-item link clearfix ico-help" href="http://bbs.youzan.com/home.php?mod=space&amp;do=thread&amp;view=me&amp;order=lastpost&amp;mobile=2&amp;fid=85&amp;filter=common&amp;in_app_type=weixin"
             target="_blank">
             <p class="title-info c-black font-size-14">联系有赞客服</p>
@@ -106,6 +88,8 @@
       </div>
     </div>
   </div>
-</body>
+</template>
+<script>
+export default {};
+</script>
 
-</html>
