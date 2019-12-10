@@ -5,28 +5,30 @@
         <input class="js-id" name="id" type="hidden" value="69150287">
         <div class="block-item" style="border-top:0;">
           <label>收货人</label>
-          <input type="text" placeholder="请输入姓名" name="user_name" value="tony" v-model="name" maxlength="20">
+          <input type="text" placeholder="请输入姓名" name="user_name" value="tony" v-model="username" maxlength="20">
         </div>
         <div class="block-item">
           <label>联系电话</label>
           <input type="tel" placeholder="联系电话" name="tel" value="13112345678" v-model="phone" maxlength="11">
         </div>
-        <div class="block-item">
+        <div class="block-item" >
           <label>选择地区</label>
           <div class="select-group">
             <select class="js-province-selector" v-model="provinceValue">
               <option value="-1">选择省份</option>
-              <option v-for="p in addressData.list" :value="p.value">{{p.label}}</option>
+              <option :value="p.value" v-for="p in addressData.list">{{p.label}}</option>
             
             </select>
             <select class="js-city-selector" v-model="cityValue">
               <option value="-1">选择城市</option>
-              <option value="440100">广州市</option>
+              <option :value="c.value" v-for="c in cityList">{{c.label}}</option>
             
             </select>
             <select class="js-county-selector" name="area_code" v-model="districtValue"  data-code="440402">
               <option value="-1">选择地区</option>
-              <option value="440402">香洲区</option>
+              <option :value="d.value" v-for="d in districtList">{{d.label}}</option>
+              
+              <!-- <option value="440402">香洲区</option> -->
             </select>
           </div>
         </div>
@@ -42,19 +44,22 @@
     <div class="block section js-delete block-control-btn" v-show="type==='edit'" @click="remove()">
       <div class="block-item c-red center">删除</div>
     </div>
-    <div class="block stick-bottom-row center js-save-default" v-show="type==='edit'" @click="isDefault = true">
+    <div class="block stick-bottom-row center js-save-default" v-show="type==='edit'" @click="setDefault()">
       <button class="btn btn-standard js-save-default-btn">设为默认收货地址</button>
     </div>
   </div>
 </template>
 <script>
+import axios from "axios";
+import url from "js/api.js";
+import Ad from "js/address.json";
 export default {
   data() {
     return {
       id: "",
       type: "",
       instance: null,
-      name: "",
+      username: "",
       phone: "",
       province: "",
       provinceValue: -1,
@@ -64,28 +69,32 @@ export default {
       districtValue: -1,
       address: "",
       isDefault: false,
-      addressData: import("js/address.json"),
-      cartList: null
+      addressData: Ad,
+      cityList: null,
+      districtList: null
     };
   },
+  //为什么有两次赋值province  在两个按钮同时能跳转到form.vue  共用保存按钮 需要判断当前是修改还是新增
+  //还有当省市区变动时 也要看一下是谁在改变他 因为 有两种形式可以变动他
+
   created() {
     let x = this.$route.query;
     this.type = x.type;
     this.instance = x.instance;
 
     if (this.type === "edit") {
+      //修改状态 获取传过来的省市区 显示出来
       //编辑当前地址
       let ad = this.instance;
-      this.name = ad.name;
+      this.id = ad.id;
+      this.username = ad.username;
       this.phone = ad.phone;
 
       this.provinceName = ad.provinceName;
       this.provinceValue = parseInt(ad.provinceValue);
-      this.cityName = ad.cityName;
-      this.cityValue = parseInt(ad.cityValue);
-      this.districtName = ad.cityName;
-      this.districtValue = parseInt(ad.districtValue);
+
       this.address = ad.address;
+      this.isDefault = ad.isDefault;
     }
     if (this.type === "add") {
       //没有相关地址 写入新的地址
@@ -100,16 +109,25 @@ export default {
       let index = this.addressData.list.findIndex(item => {
         return item.value === val;
       });
-      this.cartList = this.addressData.list[index].children;
+      this.cityList = this.addressData.list[index].children;
+      this.cityValue = -1;
+      this.districtValue = -1; //还原选中不同省份时 后面的市区都还原
+      if (this.ype == "edit") {
+        this.cityValue = this.instance.cityValue;
+      }
     },
     cityValue(val) {
       //city值变化 区也跟着变化
       if (val === -1) return; //有例外
 
-      let index = this.cartList.findIndex(item => {
+      let index = this.cityList.findIndex(item => {
         return item.value === val;
       });
-      this.districtList = this.cartList[index].children;
+      this.districtList = this.cityList[index].children;
+      this.districtValue = -1; //还原选中不同省份时 后面的市区都还原
+      if (this.type == "edit") {
+        this.districtValue = this.instance.districtValue;
+      }
     }
   },
   methods: {
@@ -138,26 +156,26 @@ export default {
         //修改需要整个list
         data.id = this.id;
         axios.post(url.updateAddress, { data }).then(res => {
-          go(-1); //回到all页面 有刷新一遍 获取后台最新列表
+          this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
         });
       }
       if (this.type === "add") {
         data.id = this.id;
         axios.post(url.addAddress, { data }).then(res => {
-          go(-1); //回到all页面 有刷新一遍 获取后台最新列表
+          this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
         });
       }
     },
     remove() {
       if (window.confirm("确定删除吗")) {
-        axios.post(url.deleteAd, { id: this.id }).then(res => {
-          go(-1);
+        axios.post(url.removeAddress, { id: this.id }).then(res => {
+          this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
         });
       }
     },
     setDefault() {
       axios.post(url.setDefault, { id: this.id }).then(res => {
-        go(-1);
+        this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
       });
     }
   }

@@ -10,8 +10,8 @@ let url = {
     addressList: '/address/lists',
     updateAddress: '/address/updateAd',
     addAddress: '/address/addAd',
-    removeAddress: '/address/removeAd'
-    setDefault: '/address/setDefault'
+    removeAddress: '/address/removeAd',
+    setDefault: '/address/setDefault',
 }
 let hosts = 'http://rap2api.taobao.org/app/mock/166022'
 for (let key in url) {

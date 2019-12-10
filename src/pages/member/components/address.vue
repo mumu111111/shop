@@ -1,6 +1,9 @@
 <template>
-  <router-view></router-view>
+  <div>
+    <router-view/>  
+  </div>
 </template>
+
 
 <style scoped>
 @import "./address_base.css";

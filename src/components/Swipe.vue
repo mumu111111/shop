@@ -24,7 +24,7 @@
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 export default {
-  name:'swipe',
+  name: "swipe",
   props: ["lists"],
   mounted() {
     this.init();
