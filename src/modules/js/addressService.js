@@ -8,19 +8,19 @@ class Address {
   }
 
   static add(data) {
-    return fetch(url.addAddress, data)
+    return fetch('POST', url.addAddress, data)
   }
 
   static remove(id) {
-    return fetch(url.removeAddress, id)
+    return fetch('POST', url.removeAddress, id)
   }
 
   static update(data) {
-    return fetch(url.updateAddress, data)
+    return fetch('POST', url.updateAddress, data)
   }
 
   static setDefault(id) {
-    return fetch(url.setDefault, id)
+    return fetch('POST', url.setDefault, id)
   }
 }
 

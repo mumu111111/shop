@@ -50,8 +50,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import url from "js/api.js";
+import Address from "js/addressService.js";
 import Ad from "js/address.json";
 export default {
   data() {
@@ -155,28 +154,41 @@ export default {
       if (this.type === "edit") {
         //修改需要整个list
         data.id = this.id;
-        axios.post(url.updateAddress, { data }).then(res => {
-          this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
+        Address.add(data).then(res => {
+          this.$router.go(-1);
         });
+
+        // axios.post(url.updateAddress, { data }).then(res => {
+        //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
+        // });
       }
       if (this.type === "add") {
         data.id = this.id;
-        axios.post(url.addAddress, { data }).then(res => {
+        Address.update(data).then(res => {
           this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
         });
+        //  axios.post(url.addAddress, { data }).then(res => {
+        //     this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
+        //   });
       }
     },
     remove() {
       if (window.confirm("确定删除吗")) {
-        axios.post(url.removeAddress, { id: this.id }).then(res => {
+        Address.remove(this.id).then(res => {
           this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
         });
+        // axios.post(url.removeAddress, { id: this.id }).then(res => {
+        //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
+        // });
       }
     },
     setDefault() {
-      axios.post(url.setDefault, { id: this.id }).then(res => {
+      Address.setDefault(this.id).then(res => {
         this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
       });
+      // axios.post(url.setDefault, { id: this.id }).then(res => {
+      //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
+      // });
     }
   }
 };
