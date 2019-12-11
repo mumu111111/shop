@@ -161,7 +161,7 @@ only screen and (min-device-pixel-ratio:1.5) {
 .bottom-nav li {
   display: block;
   float: left;
-  width: 25%;
+  width: 33.3333%;
   height: 100%
 }
 

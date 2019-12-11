@@ -7,7 +7,7 @@ let url = {
     reduceCart: '/cart/reduce',
     cartList: '/cart/lists',
     removeCart: '/cart/remove',
-    addressList: 'address/lists',
+    addressList: '/address/lists',
     updateAddress: '/address/updateAd',
     addAddress: '/address/addAd',
     removeAddress: '/address/removeAd',

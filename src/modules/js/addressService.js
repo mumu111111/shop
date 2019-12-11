@@ -4,7 +4,7 @@ import url from 'js/api.js'
 class Address {
 
   static list() {
-    return fetch(url.addressList)
+    return fetch('GET', url.addressList)
   }
 
   static add(data) {

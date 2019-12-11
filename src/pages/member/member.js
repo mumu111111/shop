@@ -9,6 +9,7 @@ import store from './vuex'
 new Vue({
     el: '#app',
     router,
+    store,
     render: h => h(Address)
 
 })

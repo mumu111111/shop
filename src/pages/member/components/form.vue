@@ -50,6 +50,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import Address from "js/addressService.js";
 import Ad from "js/address.json";
 export default {
@@ -60,9 +61,9 @@ export default {
       instance: null,
       username: "",
       phone: "",
-      province: "",
+      provinceName: "",
       provinceValue: -1,
-      city: "",
+      cityName: "",
       cityValue: -1,
       districtName: "",
       districtValue: -1,
@@ -73,7 +74,12 @@ export default {
       districtList: null
     };
   },
-  //为什么有两次赋值province  在两个按钮同时能跳转到form.vue  共用保存按钮 需要判断当前是修改还是新增
+  computed: {
+    ...mapState({
+      lists: state => state.lists
+    })
+  },
+  //为什么有两次赋值province  在两个按钮同时能跳转到form.vue  <共用>保存按钮 需要判断当前是修改还是新增
   //还有当省市区变动时 也要看一下是谁在改变他 因为 有两种形式可以变动他
 
   created() {
@@ -91,7 +97,10 @@ export default {
 
       this.provinceName = ad.provinceName;
       this.provinceValue = parseInt(ad.provinceValue);
-
+      this.cityName = ad.cityName;
+      this.cityValue = ad.cityValue;
+      this.districtName = ad.districtName;
+      this.districtValue = ad.districtValue;
       this.address = ad.address;
       this.isDefault = ad.isDefault;
     }
@@ -101,6 +110,12 @@ export default {
     }
   },
   watch: {
+    lists: {
+      handler() {
+        this.$router.go(-1);
+      },
+      deep: true
+    },
     //监听省变化 市变化
     provinceValue(val) {
       //找到val 下标  对应的citylist
@@ -111,7 +126,7 @@ export default {
       this.cityList = this.addressData.list[index].children;
       this.cityValue = -1;
       this.districtValue = -1; //还原选中不同省份时 后面的市区都还原
-      if (this.ype == "edit") {
+      if (this.type == "edit") {
         this.cityValue = this.instance.cityValue;
       }
     },
@@ -133,20 +148,26 @@ export default {
     add() {
       //取不到数据
       let {
-        name,
+        username,
         phone,
         provinceValue,
         cityValue,
         districtValue,
+        provinceName,
+        cityName,
+        districtName,
         address
       } = this;
       //name = this.name
       let data = {
-        name,
+        username,
         phone,
         provinceValue,
         cityValue,
         districtValue,
+        provinceName,
+        cityName,
+        districtName,
         address
       };
       //data.name = this.name   把data作为异步上传数据的data
@@ -154,8 +175,10 @@ export default {
       if (this.type === "edit") {
         //修改需要整个list
         data.id = this.id;
-
-        this.$store.dispatch("addAddress", data);
+        data.isDefault = this.isDefault;
+        console.log("修改保存data" + data);
+        console.dir(data);
+        this.$store.dispatch("updateAddress", data);
         // Address.add(data).then(res => {
         //   this.$router.go(-1);
         // });
@@ -165,8 +188,9 @@ export default {
         // });
       }
       if (this.type === "add") {
-        data.id = this.id;
-        this.$store.dispatch("updateAddress", data);
+        console.log("新增data" + data);
+        console.dir(data);
+        this.$store.dispatch("addAddress", data);
         // Address.update(data).then(res => {
         //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
         // });

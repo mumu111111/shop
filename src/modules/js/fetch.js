@@ -1,15 +1,15 @@
 import axios from 'axios'
-function fetch(method='GET',url,data={}){
-    return new Promise((resolve,reject)=> {
-        let options = {method, url}
-        if(method.toLowerCase() === 'get'){
+function fetch(method = 'GET', url, data = {}) {
+    return new Promise((resolve, reject) => {
+        let options = { method, url }
+        if (method.toLowerCase() === 'get') {
             options.params = data
-        }else{
+        } else {
             options.data = data
         }
-        axios(options).then(res=> {
-            let status = res.data.status
-            console.log(status)
+        axios(options).then(res => {
+            // let status = res.data.status
+            // console.log(status)
             // if(status === 200){
             //     resolve(res)
             // }
@@ -19,7 +19,7 @@ function fetch(method='GET',url,data={}){
             // }
             // reject(res)
             resolve(res)
-        }).catch(error=> {
+        }).catch(error => {
             reject(error)
         })
     })
