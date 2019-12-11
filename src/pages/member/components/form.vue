@@ -154,9 +154,11 @@ export default {
       if (this.type === "edit") {
         //修改需要整个list
         data.id = this.id;
-        Address.add(data).then(res => {
-          this.$router.go(-1);
-        });
+
+        this.$store.dispatch("addAddress", data);
+        // Address.add(data).then(res => {
+        //   this.$router.go(-1);
+        // });
 
         // axios.post(url.updateAddress, { data }).then(res => {
         //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
@@ -164,9 +166,10 @@ export default {
       }
       if (this.type === "add") {
         data.id = this.id;
-        Address.update(data).then(res => {
-          this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
-        });
+        this.$store.dispatch("updateAddress", data);
+        // Address.update(data).then(res => {
+        //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
+        // });
         //  axios.post(url.addAddress, { data }).then(res => {
         //     this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
         //   });
@@ -174,18 +177,21 @@ export default {
     },
     remove() {
       if (window.confirm("确定删除吗")) {
-        Address.remove(this.id).then(res => {
-          this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
-        });
+        this.$store.dispatch("removeAddress", this.id);
+
+        // Address.remove(this.id).then(res => {
+        //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
+        // });
         // axios.post(url.removeAddress, { id: this.id }).then(res => {
         //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
         // });
       }
     },
     setDefault() {
-      Address.setDefault(this.id).then(res => {
-        this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
-      });
+      this.$store.dispatch("setDefaultAddress", this.id);
+      // Address.setDefault(this.id).then(res => {
+      //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
+      // });
       // axios.post(url.setDefault, { id: this.id }).then(res => {
       //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
       // });

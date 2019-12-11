@@ -15,21 +15,28 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import url from "js/api.js";
+import Address from "js/addressService.js";
 export default {
-  data() {
-    return {
-      lists: null
-    };
+  // data() {
+  //   return {
+  //     lists: null
+  //   };
+  // },
+  computed: {
+    //获取全局状态  响应式渲染到页面
+    lists() {
+      console.log(this.$store);
+      return this.$store.state.lists;
+    }
   },
   created() {
-    //?
-    // this.$store.dispatch(getLists);
-    axios.get(url.addressList).then(res => {
-      this.lists = res.data.lists; //rap
-    });
-    console.log("list" + this.lists);
+    if (!this.lists) {
+      this.$store.dispatch("getLists");
+    }
+
+    // axios.get(url.addressList).then(res => {
+    //   this.lists = res.data.lists; //rap
+    // });
   },
   methods: {
     toEdit(list) {
