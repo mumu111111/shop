@@ -42,6 +42,8 @@ const store = new Vuex.Store({
         getLists({ commit }) {
             Address.list().then(res => { //后台请求数据，拿到响应内容
                 console.log('res' + res)
+                console.log('data' + res.data.lists)
+
                 commit('init', res.data.lists)
             })
         },
