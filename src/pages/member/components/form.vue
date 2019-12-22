@@ -111,6 +111,7 @@ export default {
   },
   watch: {
     lists: {
+      //深度监听vuex lists 也是一种解决不能响应式的方式
       handler() {
         this.$router.go(-1);
       },

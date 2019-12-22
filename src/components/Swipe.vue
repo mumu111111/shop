@@ -32,9 +32,10 @@ export default {
   methods: {
     init() {
       new Swiper(".swiper-container", {
-        loop: true,
         // 循环模式选项
         // 如果需要分页器
+
+        loop: true,
         pagination: {
           el: ".swiper-pagination"
         }
@@ -45,8 +46,9 @@ export default {
 </script>
 <style>
 .swiper-slide img {
-  width: 100%;
-  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  display: block;
 }
 </style>
 
