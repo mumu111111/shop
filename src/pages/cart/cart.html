@@ -45,8 +45,11 @@
                 <ul class="js-list block block-list block-list-cart border-0">
                   <li class="block-item block-item-cart " :key="good.id" :ref="'goods-'+shopIndex+'-'+goodIndex" :class="{editing: shop.editing }"
                     v-for="(good,goodIndex) in shop.goodsList" @touchstart="start($event,good)" @touchend="end($event,good,shopIndex,goodIndex)">
-                    <div>
-                      <div class="全选" @click="selectGood(shop,shopIndex,good,goodIndex)">
+                    <div class="goods" style="display: flex;align-items: center;">
+                      <div class="全选" style="
+                      margin-right: 10px;
+                      margin-top: -18px;
+                  " @click="selectGood(shop,shopIndex,good,goodIndex)">
                         <span class="check" :class="{checked: good.checked}" v-show="!editingShop"></span>
                         <span class="check" :class="{checked: good.removeChecked}" v-show="editingShop"></span>
 

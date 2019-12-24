@@ -12,6 +12,7 @@ const store = new Vuex.Store({
             state.lists = list
         },
         add(state, data) {
+
             state.lists.push(data)
         },
         remove(state, id) {

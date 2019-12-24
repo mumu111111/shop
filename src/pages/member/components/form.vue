@@ -192,6 +192,22 @@ export default {
         console.log("新增data" + data);
         console.dir(data);
         this.$store.dispatch("addAddress", data);
+
+        // if (
+        //   data.username == "" ||
+        //   data.phone == "" ||
+        //   data.provinceValue == "" ||
+        //   data.cityValue == "" ||
+        //   data.districtValue == "" ||
+        //   data.provinceName == "" ||
+        //   data.cityName == "" ||
+        //   data.districtName == "" ||
+        //   data.address == ""
+        // ) {
+        //   alert("不能为空");
+        // } else {
+        //   this.$store.dispatch("addAddress", data);
+        // }
         // Address.update(data).then(res => {
         //   this.$router.go(-1); //回到all页面 有刷新一遍 获取后台最新列表
         // });
